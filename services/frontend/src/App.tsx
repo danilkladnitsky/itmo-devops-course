@@ -1,10 +1,24 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [count, setCount] = useState(0);
+  const [title, setTitle] = useState('');
+
+  useEffect(() => {
+    const fetchTitleFromServer = async () => {
+      const res = await fetch('http://localhost:3000/status');
+
+      if (res.ok) {
+        const data = await res.text();
+        setTitle(data);
+      }
+    }
+    fetchTitleFromServer();
+  }, [])
+  
 
   return (
     <>
@@ -22,11 +36,11 @@ function App() {
           count is {count}
         </button>
         <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
+          {title}
         </p>
       </div>
       <p className="read-the-docs">
-        <img src='storage/meme.jpeg' />
+        <img src='storage/cat.png' />
       </p>
     </>
   )

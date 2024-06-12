@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: backend-container
-          image: danyakladnitsky/itmo-devops-course.backend:v1.2
+          image: danyakladnitsky/itmo-devops-course.backend:latest
           resources:
             limits:
               cpu: 200m

@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: frontend-container
-          image: danyakladnitsky/itmo-devops-course.frontend:v1.2
+          image: danyakladnitsky/itmo-devops-course.frontend:latest
           resources:
             limits:
               cpu: 200m

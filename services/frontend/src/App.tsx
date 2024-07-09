@@ -9,7 +9,7 @@ function App() {
 
   useEffect(() => {
     const fetchTitleFromServer = async () => {
-      const res = await fetch('http://localhost:3000/status');
+      const res = await fetch('http://backend-service:3000/status');
 
       if (res.ok) {
         const data = await res.text();

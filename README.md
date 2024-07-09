@@ -103,3 +103,68 @@ livenessProbe:
 nextcloud во время поднятия пода запускает миграции и актуализирует состояние постгреса под свои нужды, в том числе добавляя необходимых юзеров, схемы, таблицы и прочее.
 
 И только после того, как nextcloud будет перезапущен, миграции будет проведены и приложение начнет работать как и ожидается.
+
+
+
+## Homework 4
+
+### Настройка базы данных PostgreSQL
+
+Все манипуляции по настройке БД аналогичны с лабораторной работой №3.
+Секреты используются для хранения кредов и переиспользуются в бэкенд-сервисе.
+
+![image info](./static/homework_4/database.png)
+
+### Настройка фронтенда
+
+В качестве образа используется собранный локально и добавленный в Dockerhub image.
+Был перенесен инит-контейнер из второй лабораторной:
+
+```yml
+volumeMounts:
+  - name: app-volume
+    mountPath: /usr/share/nginx/html/storage
+```
+
+Также добавлено монтирование volume-а:
+
+```yml
+initContainers:
+  - name: init-container
+    image: alpine/curl:8.7.1
+    command:
+      [
+        "curl",
+        "https://streetcat.wiki/images/5/50/Freshlycat.png",
+        "-o",
+        "/var/cat.png",
+      ]
+```
+
+![image info](./static/homework_4/frontend.png)
+
+## Настройка бэкенда
+
+Для связки с базой данных была добавлена простая SQL-операция.
+В конфигурацию включены Liveness и Readiness пробы:
+
+```yml
+livenessProbe:
+  httpGet:
+    path: /healthcheck
+    port: 3000
+  initialDelaySeconds: 5
+  periodSeconds: 10
+readinessProbe:
+  httpGet:
+    path: /status
+    port: 3000
+  initialDelaySeconds: 10
+  periodSeconds: 5
+```
+
+![image info](./static/homework_4/backend-probes.png)
+
+### Итоговое состояние сервисов
+
+![image info](./static/homework_4/final.png)
